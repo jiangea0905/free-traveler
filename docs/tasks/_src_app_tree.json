@@ -1,0 +1,10 @@
+{
+  "generated_by": "scripts/validate_inputs.py",
+  "root": "src/app",
+  "existing_files": [
+    "src/app/favicon.ico",
+    "src/app/globals.css",
+    "src/app/layout.tsx",
+    "src/app/page.tsx"
+  ]
+}

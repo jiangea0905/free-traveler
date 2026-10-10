@@ -1,0 +1,121 @@
+{
+  "schema_version": "traveler-screen-route-v1",
+  "framework": "nextjs-app-router",
+  "source_documents": [
+    "docs/03_UI_COVERAGE_ANALYSIS.md",
+    "docs/04_UIUX_PLAN.md",
+    "docs/STITCH_VALIDATION_REPORT.md",
+    "design-reference/D-001/DESIGN.md",
+    "design-reference/UI_CONTRACT.md"
+  ],
+  "screens": [
+    {
+      "screen_id": "SCR-001",
+      "route": "/",
+      "page_entry": "src/app/page.tsx",
+      "category": "core",
+      "source_screen_id": "18119f6a2c6a4d948f638f8a2c74c3fb",
+      "has_mobile_variant": true,
+      "mobile_source_screen_id": "6af5d7abb15b4d61b44c4a80523f5ca5",
+      "page_owner_task_required": true,
+      "preview_required": true,
+      "starter_template_forbidden": true
+    },
+    {
+      "screen_id": "SCR-002",
+      "route": "/about",
+      "page_entry": "src/app/about/page.tsx",
+      "category": "auxiliary",
+      "source_screen_id": "a61c8204ab2b41cebf76d00803ed36ff",
+      "has_mobile_variant": false,
+      "mobile_source_screen_id": null,
+      "page_owner_task_required": true,
+      "preview_required": true
+    },
+    {
+      "screen_id": "SCR-003",
+      "route": "/travel-tools",
+      "page_entry": "src/app/travel-tools/page.tsx",
+      "category": "core",
+      "source_screen_id": "372a5cee3f0f46408db798118bf71358",
+      "has_mobile_variant": true,
+      "mobile_source_screen_id": "57f6f025529942428e684cafd91cd854",
+      "page_owner_task_required": true,
+      "preview_required": true
+    },
+    {
+      "screen_id": "SCR-004",
+      "route": "/mates",
+      "page_entry": "src/app/mates/page.tsx",
+      "category": "core",
+      "source_screen_id": "334768bc49364517b81be074b66ee450",
+      "has_mobile_variant": false,
+      "mobile_source_screen_id": null,
+      "page_owner_task_required": true,
+      "preview_required": true
+    },
+    {
+      "screen_id": "SCR-005",
+      "route": "/account",
+      "page_entry": "src/app/account/page.tsx",
+      "category": "core",
+      "source_screen_id": "7e368d521d174027875228410c9a889f",
+      "has_mobile_variant": false,
+      "mobile_source_screen_id": null,
+      "page_owner_task_required": true,
+      "preview_required": true
+    }
+  ],
+  "category_summary": {
+    "core_count": 4,
+    "core_screens": ["SCR-001", "SCR-003", "SCR-004", "SCR-005"],
+    "auxiliary_count": 1,
+    "auxiliary_screens": ["SCR-002"]
+  },
+  "technical_routes": [
+    {
+      "path": "/auth/callback",
+      "type": "auth_callback",
+      "page_entry": "src/app/auth/callback/route.ts",
+      "counts_as_screen": false,
+      "note": "Supabase 이메일 인증/로그인 콜백 처리 전용 Route. 디자인 Screen으로 세지 않는다."
+    },
+    {
+      "path": "/api/*",
+      "type": "api_route",
+      "page_entry": "src/app/api/**/route.ts",
+      "counts_as_screen": false,
+      "note": "동행글·참가요청·신고·차단·관리자 설정 등 내부 API Route. 디자인 Screen으로 세지 않는다."
+    },
+    {
+      "path": "not-found",
+      "type": "not_found",
+      "page_entry": "src/app/not-found.tsx",
+      "counts_as_screen": false,
+      "note": "404 처리 전역 컴포넌트. 디자인 Screen으로 세지 않는다."
+    },
+    {
+      "path": "error-boundary",
+      "type": "error_boundary",
+      "page_entry": "src/app/error.tsx",
+      "counts_as_screen": false,
+      "note": "런타임 오류 처리 전역 컴포넌트. 디자인 Screen으로 세지 않는다."
+    }
+  ],
+  "required_navigation": [
+    { "from": "SCR-001", "to": "SCR-003", "trigger": "Hero CTA '여행 조건 정리하러 가기'" },
+    { "from": "SCR-001", "to": "SCR-004", "trigger": "최근 동행글 '모두 보기' 또는 작성 CTA" },
+    { "from": "SCR-001", "to": "SCR-002", "trigger": "free_traveler 요약 CTA '대표 소개 보러가기'" },
+    { "from": "SCR-001", "to": "SCR-005", "trigger": "비로그인 사용자의 즐겨찾기/로그인 액션" },
+    { "from": "SCR-002", "to": "SCR-001", "trigger": "추천 여행지 Card 클릭 (상세 Drawer 딥링크)" },
+    { "from": "SCR-002", "to": "SCR-003", "trigger": "하단 CTA Banner '여행 조건 정리하기'" },
+    { "from": "SCR-002", "to": "SCR-004", "trigger": "하단 CTA Banner '동행 찾아보기'" },
+    { "from": "SCR-003", "to": "SCR-004", "trigger": "동행 작성 완료 후 이동" },
+    { "from": "SCR-003", "to": "SCR-005", "trigger": "비로그인/미성년 사용자의 로그인·성인 확인 유도" },
+    { "from": "SCR-004", "to": "SCR-003", "trigger": "안전 안내 CTA '항공·숙소 준비하기'" },
+    { "from": "SCR-004", "to": "SCR-005", "trigger": "비로그인 사용자의 로그인 유도, 또는 요청/글 관리를 위한 내 활동 이동" },
+    { "from": "SCR-005", "to": "SCR-001", "trigger": "내 활동의 즐겨찾기 항목 클릭" },
+    { "from": "SCR-005", "to": "SCR-004", "trigger": "내 활동의 내 글/참가 요청 항목 클릭" },
+    { "from": "SCR-005", "to": "SCR-003", "trigger": "내 활동의 '새 동행글 작성' CTA" }
+  ]
+}
