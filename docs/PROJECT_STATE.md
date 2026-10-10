@@ -1,7 +1,7 @@
 # Project State — Free Traveler
 
 **Document ID:** PROJECT-STATE-001
-**최종 갱신:** 2026-09-20 (초기 스냅샷 — 아직 구현 착수 전)
+**최종 갱신:** 2026-10-10 (git 저장소 초기화 + GitHub 원격 연결 + Wave 계획 생성 반영 — 아직 구현 착수 전)
 **갱신 주체:** 이 문서는 사람이 손으로 고치는 문서가 아니라 `/run-wave`, `/prepare-task`, `/release-check` 실행 결과로 갱신되는 살아있는 상태 기록이다. 각 필드는 실제로 확인한 값만 적는다 — 확인되지 않은 값을 "정상"으로 추정해 적지 않는다.
 
 ---
@@ -13,17 +13,17 @@
 | Harness Schema | `traveler-screen-route-v1` |
 | Design Version | D-001 (Status: LOCKED) |
 | Scope Mode | `docs/PROJECT_SCOPE.md` 기준 — IMPLEMENT 89 / EXCLUDED 25 (합계 114) |
-| Current Wave | 없음 — `TASKS/WAVE_PLAN.md`가 아직 생성되지 않음 |
+| Current Wave | 없음 — `TASKS/WAVE_PLAN.md`/`TASKS/WAVE_STATE.json`은 `scripts/build_waves.py`로 생성 완료(W01~W14, 59개 Task 전수 배치, 감사 PASS)했지만 아직 `/run-wave`를 실행한 적은 없다. 전 Wave `status: pending` |
 | Current Task | 없음 |
 | Completed Tasks | 0 / 59 |
-| Blocked Tasks | 0(진행 시도 자체가 없어 `BLOCKED` 판정 이력 없음) — 단, §Deferred Items 아래 환경 블로커 참고 |
-| Latest CI | 실행 이력 없음 |
+| Blocked Tasks | 0(진행 시도 자체가 없어 `BLOCKED` 판정 이력 없음) — 단, §Deferred Items 아래 환경 블로커 참고(6개 중 1개는 해소됨) |
+| Latest CI | 실행 이력 없음(원격 저장소는 2026-10-10 연결됨 — `https://github.com/jiangea0905/free-traveler.git` main, commit `73ca400`) |
 | Supabase State | 미확인(프로젝트 존재 여부 확인 안 됨) |
 | Vercel Preview URL | 없음 |
 | Screen Checkpoints | SCR-001~005, FINAL 전부 `PENDING`(아래 §Screen Checkpoints 참고) |
 | Playwright State | 미설치·미실행 |
 | Deferred Items | EXCLUDED 25개(`docs/UIUX_TRACEABILITY.md`, `TASKS/00_TASK_LIST.md` §NON_IMPLEMENTATION) |
-| Next Action | `TASKS/WAVE_PLAN.md` 작성 → `SETUP-DEPENDENCIES`부터 `/prepare-task` 실행 |
+| Next Action | `/prepare-task W01 SETUP-DEPENDENCIES`부터 시작 |
 
 ---
 
@@ -41,13 +41,13 @@
 
 ## Current Wave / Current Task
 
-- **Current Wave:** 없음. `TASKS/WAVE_PLAN.md`가 아직 만들어지지 않아 `/run-wave`가 실행된 적이 없다.
-- **Current Task:** 없음. Wave가 없으므로 진행 중인 Task도 없다.
+- **Current Wave:** 없음. `TASKS/WAVE_PLAN.md`·`TASKS/WAVE_STATE.json`은 생성되어 있지만(`scripts/build_waves.py`, W01~W14) `/run-wave`가 아직 실행된 적이 없어 모든 Wave가 `pending` 상태다.
+- **Current Task:** 없음. 첫 READY Task는 `W01`의 `SETUP-DEPENDENCIES`(Depends On 없음).
 - 다음 단계는 §Next Action 참고.
 
 ## Completed Tasks
 
-**0 / 59.** `TASKS/00_TASK_LIST.md`에 정의된 59개 Task 중 실제로 구현이 완료된 것은 없다. `TASKS/WAVE_STATE.md` 자체가 아직 존재하지 않는다(어떤 Task도 `DONE` 기록이 없음).
+**0 / 59.** `TASKS/00_TASK_LIST.md`에 정의된 59개 Task 중 실제로 구현이 완료된 것은 없다. `TASKS/WAVE_STATE.json`은 존재하지만 14개 Wave 전부 `status: "pending"`이다(어떤 Task도 `DONE` 기록이 없음).
 
 ## Blocked Tasks
 
@@ -60,7 +60,7 @@
 | 3 | Supabase 프로젝트 존재 여부 미확인 | 로컬에서 확인 불가 | §Supabase State |
 | 4 | `.github/workflows/` 없음 | 디렉터리 없음 | §Latest CI |
 | 5 | `supabase/` 마이그레이션 없음 | 디렉터리 없음 | §Supabase State, DB 관련 Task 전부 |
-| 6 | **git 저장소 자체가 초기화되지 않음**(`git rev-parse --is-inside-work-tree` → `fatal: not a git repository`) | 위 명령 실행 결과 | Commit(`/implement-task` Commit 정책), CI(GitHub Actions는 원격 저장소 필요), Vercel Git 연동 전부 불가능 — 착수 전 가장 먼저 해결해야 하는 항목 |
+| ~~6~~ | ~~git 저장소 자체가 초기화되지 않음~~ — **해소됨(2026-10-10)**: `git init -b main` 후 `https://github.com/jiangea0905/free-traveler.git`의 빈 `main`에 Initial commit(`73ca400`, 113 files) 푸시 완료, `git remote -v`/`git log`로 확인 | `git status` → `Your branch is up to date with 'origin/main'` | 더 이상 블로커 아님 — `.github/workflows/`(블로커 4)·Vercel Git 연동은 이제 원격 저장소가 있으므로 착수 가능 |
 
 ## Latest CI
 
@@ -95,12 +95,12 @@
 
 - **EXCLUDED Requirement 25개** — `docs/UIUX_TRACEABILITY.md`와 `TASKS/00_TASK_LIST.md`의 `## NON_IMPLEMENTATION` 표에 근거·후속 방향과 함께 보존되어 있다. 이번 릴리스 범위에서 구현하지 않는다(`docs/DECISION_LOG.md` DEC-014).
 - **명시적 범위 제외**(`docs/ARCHITECTURE.md` §17): 콘텐츠 CMS, 외부 Email 공급자 연동, Monitoring/관측 인프라. 착수 차단이 아니라 애초에 만들 계획이 없는 항목이다.
-- **환경 블로커 6개**(§Blocked Tasks) — 착수 자체를 막는 항목이며, EXCLUDED와 달리 반드시 해소해야 한다.
+- **환경 블로커 6개 중 5개 남음**(§Blocked Tasks) — git 초기화(#6)는 2026-10-10 해소됨. 나머지(package.json 의존성, `.env`, Supabase 프로젝트, `.github/workflows/`, `supabase/` 마이그레이션)는 EXCLUDED와 달리 반드시 해소해야 한다.
 
 ## Next Action
 
-1. **git 저장소 초기화**(§Blocked Tasks #6) — 이후 모든 Commit·CI·Vercel 연동의 전제 조건.
-2. `TASKS/WAVE_PLAN.md` 작성 — `TASKS/00_TASK_LIST.md`의 Depends On 그래프를 근거로 Wave 구성을 정의한다(`.claude/commands/run-wave.md` §WAVE_PLAN 형식 참고).
-3. 첫 Wave의 첫 Task는 Depends On이 없는 `SETUP-DEPENDENCIES`다 — `/prepare-task W01 SETUP-DEPENDENCIES`부터 시작한다.
+1. `/prepare-task W01 SETUP-DEPENDENCIES` 실행 — `TASKS/WAVE_PLAN.md`의 첫 READY Task(Depends On 없음).
+2. 통과하면 `/implement-task`로 구현 → `TASKS/WAVE_STATE.json`의 `W01` 상태를 `in_progress`/`completed`로 갱신.
+3. 이후 `/run-wave W01`부터 `TASKS/WAVE_PLAN.md`에 기록된 W01~W14 순서를 그대로 따른다.
 
-이 문서는 위 세 가지가 진행되는 대로, 그리고 이후 각 Wave 실행마다 갱신되어야 한다. 갱신하지 않고 오래된 값을 그대로 두면 이 문서 자체가 §커버리지 검증 대상이 될 수 있다.
+이 문서는 위 단계가 진행되는 대로, 그리고 이후 각 Wave 실행마다 갱신되어야 한다. 갱신하지 않고 오래된 값을 그대로 두면 이 문서 자체가 §커버리지 검증 대상이 될 수 있다.
